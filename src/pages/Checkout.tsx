@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Check, CreditCard, MapPin, Package } from 'lucide-react';
+import { ArrowLeft, Check, CreditCard, MapPin } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useOrder } from '../context/OrderContext';
-import { CheckoutState, CustomerInfo, ShippingMethod, PaymentMethod, PaymentInfo, OrderCreate } from '../types';
+import { CheckoutState, CustomerInfo, PaymentInfo, OrderCreate } from '../types';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import OrderSummary from '../components/OrderSummary';
