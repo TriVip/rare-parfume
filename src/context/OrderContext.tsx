@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useReducer, ReactNode } from 'react';
 import { Order, OrderCreate, OrderStatus } from '../types';
+import { post, patch } from '../utils/api';
 
 interface OrderState {
   orders: Order[];
@@ -78,59 +79,7 @@ export const OrderProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     dispatch({ type: 'SET_ERROR', payload: null });
 
     try {
-      // TODO: Replace with actual API call
-      // const response = await fetch('/api/orders', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(orderData)
-      // });
-      // const order = await response.json();
-
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      const order: Order = {
-        id: `ORD-${Date.now()}`,
-        userId: 'temp-user-id', // Will be replaced with actual user ID
-        items: orderData.items,
-        shippingAddress: {
-          id: 'temp-address-id',
-          type: 'shipping',
-          firstName: orderData.customerInfo.firstName,
-          lastName: orderData.customerInfo.lastName,
-          company: '',
-          address: orderData.customerInfo.address,
-          city: orderData.customerInfo.city,
-          state: orderData.customerInfo.district,
-          zipCode: orderData.customerInfo.ward,
-          country: 'Vietnam',
-          phone: orderData.customerInfo.phone,
-          isDefault: false
-        },
-        billingAddress: {
-          id: 'temp-billing-address-id',
-          type: 'billing',
-          firstName: orderData.customerInfo.firstName,
-          lastName: orderData.customerInfo.lastName,
-          company: '',
-          address: orderData.customerInfo.address,
-          city: orderData.customerInfo.city,
-          state: orderData.customerInfo.district,
-          zipCode: orderData.customerInfo.ward,
-          country: 'Vietnam',
-          phone: orderData.customerInfo.phone,
-          isDefault: false
-        },
-        paymentMethod: orderData.paymentMethod.name,
-        subtotal: orderData.subtotal,
-        shipping: orderData.shipping,
-        tax: orderData.tax,
-        total: orderData.total,
-        status: 'pending',
-        orderDate: new Date().toISOString(),
-        trackingNumber: undefined
-      };
-
+      const order = await post<Order>('/orders', orderData);
       dispatch({ type: 'ADD_ORDER', payload: order });
       return order;
 
@@ -147,21 +96,12 @@ export const OrderProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     dispatch({ type: 'SET_LOADING', payload: true });
     
     try {
-      // TODO: Replace with actual API call
-      // await fetch(`/api/orders/${orderId}/status`, {
-      //   method: 'PATCH',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ status })
-      // });
-
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
+      const updated = await patch<Order>(`/orders/${orderId}/status`, { status: status.status });
       dispatch({
         type: 'UPDATE_ORDER',
         payload: {
           id: orderId,
-          updates: { status: status.status }
+          updates: { status: updated.status }
         }
       });
 
