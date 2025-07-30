@@ -96,6 +96,10 @@ cd rare-parfume-website
 # Cài đặt dependencies
 npm install
 
+# Tạo file cấu hình môi trường
+cp .env.example .env.local
+# Mở `.env.local` và chỉnh sửa giá trị phù hợp trước khi chạy ứng dụng
+
 # Chạy development server
 npm start
 ```
