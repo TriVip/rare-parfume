@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, ShoppingBag, Menu, X } from 'lucide-react';
+import { Search, ShoppingBag, Menu, X, User } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useSupabase } from '../context/SupabaseContext';
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const { getTotalItems, toggleCart } = useCart();
+  const { user } = useSupabase();
   const navigate = useNavigate();
 
   const handleSearch = (e: React.FormEvent) => {
@@ -117,6 +119,13 @@ const Header: React.FC = () => {
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-600 transition-all duration-200 group-hover:w-full"></span>
               </Link>
             ))}
+            <Link
+              to={user ? "/profile" : "/login"}
+              className="text-elegant-700 hover:text-primary-600 font-medium transition-colors duration-200 relative group"
+            >
+              {user ? "Tài khoản" : "Đăng nhập"}
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-600 transition-all duration-200 group-hover:w-full"></span>
+            </Link>
           </nav>
 
           {/* Search Bar - HIDDEN ON MOBILE */}
@@ -143,6 +152,17 @@ const Header: React.FC = () => {
           {/* Action buttons - COMPACT MOBILE LAYOUT */}
           <div id="header-actions" className="flex items-center space-x-2 sm:space-x-4">
             {/* Mobile search - MOVED TO MENU */}
+            
+            {/* User account */}
+            <Link
+              to={user ? "/profile" : "/login"}
+              className="relative text-elegant-700 hover:text-primary-600 transition-colors duration-200 p-2 touch-target"
+            >
+              <User size={20} className="sm:w-6 sm:h-6" />
+              {user && (
+                <span className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 bg-green-500 text-white text-xs rounded-full w-2 h-2 sm:w-3 sm:h-3 flex items-center justify-center"></span>
+              )}
+            </Link>
             
             {/* Cart - LARGER TOUCH TARGET */}
             <button
@@ -236,6 +256,13 @@ const Header: React.FC = () => {
                   {item.name}
                 </Link>
               ))}
+              <Link
+                to={user ? "/profile" : "/login"}
+                onClick={() => setIsMenuOpen(false)}
+                className="block py-3 px-2 text-elegant-700 hover:text-primary-600 hover:bg-elegant-50 font-medium transition-colors duration-200 rounded-lg touch-target"
+              >
+                {user ? "Tài khoản" : "Đăng nhập"}
+              </Link>
             </div>
 
             {/* Quick actions */}
